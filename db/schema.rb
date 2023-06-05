@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_05_114024) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_141437) do
   create_table "recipe_tags", force: :cascade do |t|
     t.integer "recipe_id"
     t.integer "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_recipe_tags_on_recipe_id"
+    t.index ["tag_id"], name: "index_recipe_tags_on_tag_id"
   end
 
   create_table "recipes", force: :cascade do |t|
@@ -26,6 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_114024) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -35,6 +38,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_114024) do
     t.integer "recipe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_reviews_on_recipe_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -52,5 +57,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_05_114024) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "recipe_tags", "recipes"
+  add_foreign_key "recipe_tags", "tags"
+  add_foreign_key "recipes", "users"
+  add_foreign_key "reviews", "recipes"
+  add_foreign_key "reviews", "users"
 
 end
